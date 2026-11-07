@@ -1,5 +1,6 @@
 
 import json
+import os
 from datetime import datetime
 from confluent_kafka import Consumer, KafkaException
 
@@ -7,9 +8,9 @@ from confluent_kafka import Consumer, KafkaException
 # KAFKA CONFIGURATION
 # ==========================================
 
-KAFKA_BROKER = "localhost:29092"
-KAFKA_TOPIC = "snmp"
-CONSUMER_GROUP = "snmp-workers"
+KAFKA_BROKER = os.getenv("KAFKA_BROKER", "localhost:29092")
+KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "snmp")
+CONSUMER_GROUP = os.getenv("CONSUMER_GROUP", "snmp-workers")
 
 consumer = Consumer({
     "bootstrap.servers": KAFKA_BROKER,

@@ -1,6 +1,7 @@
 
 import asyncio
 import json
+import os
 import time
 from datetime import datetime, timezone
 
@@ -19,15 +20,16 @@ from pysnmp.hlapi.v3arch.asyncio import (
 # CONFIGURATION
 # ==========================================
 
-ROUTER_IP = "192.168.184.129"
-COMMUNITY = "public"
-INTERFACE = "FastEthernet1/1"
-INTERFACE_INDEX = 3
+# All settings come from environment variables (see .env.example).
+ROUTER_IP = os.environ["ROUTER_IP"]            # required, e.g. your lab router
+COMMUNITY = os.environ["SNMP_COMMUNITY"]       # required, never commit the real one
+INTERFACE = os.getenv("SNMP_INTERFACE", "FastEthernet1/1")
+INTERFACE_INDEX = int(os.getenv("SNMP_INTERFACE_INDEX", "3"))
 
-KAFKA_BROKER = "localhost:29092"
-KAFKA_TOPIC = "snmp"
+KAFKA_BROKER = os.getenv("KAFKA_BROKER", "localhost:29092")
+KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "snmp")
 
-POLL_INTERVAL = 5
+POLL_INTERVAL = int(os.getenv("POLL_INTERVAL", "5"))
 
 # 64-bit SNMP traffic counters
 IN_OID = f"1.3.6.1.2.1.31.1.1.1.6.{INTERFACE_INDEX}"
